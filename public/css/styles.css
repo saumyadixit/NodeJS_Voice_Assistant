@@ -1,9 +1,12 @@
 body {
-  background-image: url("/img/background.jpg");
+  background-image: url('http://cdn26.us1.fansshare.com/photo/abstract/abstract-white-desktop-background-white-1481209899.jpg') ;
 }
 
+h1 {
+    text-shadow: 3px 2px #F5A6A6;
+}
 .post-container {
-    margin-left: 20%;
+    margin-left: 10%;
     margin-right: 20%;
     overflow: auto
 }
