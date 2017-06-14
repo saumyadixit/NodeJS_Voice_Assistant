@@ -1,0 +1,67 @@
+body {
+  background-image: url("/img/background.jpg");
+}
+
+.post-container {
+    margin-left: 20%;
+    margin-right: 20%;
+    overflow: auto
+}
+.post-thumb {
+    float: left
+}
+.post-thumb img {
+    display: block
+}
+.post-content {
+    margin-left: 10px
+}
+
+
+.cover{
+	width:100%;
+	height:100%;
+	background:#3dc0f1;
+}
+.icon{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+	display:block;
+}
+
+/*THE ARTIFAKT ;) */
+.microphone{
+	width:2em;
+	height:6em;
+	background:#fff;
+	border-radius:1em;
+}
+.microphone:before{
+	content:"";
+	position:absolute;
+	bottom:-1em;
+	left:-1em;
+	width:4em;
+	height:0.5em;
+	background:#fff;
+}
+.microphone:after{
+	content:"";
+	position:absolute;
+	bottom:-0.5em;
+	left:-0.5em;
+	width:3em;
+	height:3em;
+	border:0.3em solid #fff;
+	border-top:0.3em solid #3dc0f1;
+	border-radius:0 0 1.5em 1.5em;
+}
+
+.margin-left-right {
+width:80%;
+margin-left:10%;
+margin-right:10%;}
