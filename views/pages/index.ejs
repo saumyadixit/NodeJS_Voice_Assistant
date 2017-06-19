@@ -8,19 +8,9 @@
     <link rel="stylesheet" href="/css/styles.css">
   </head>
   <body>
-    <script src="//www.WebRTC-Experiment.com/RecordRTC.js"></script>
-    <script>
-    var session = {
-      audio: true,
-      video: false
-    };
-    var recordRTC = null;
-    navigator.getUserMedia(session, function (mediaStream) {
-      recordRTC = RecordRTC(MediaStream);
-      recordRTC.startRecording();
-      }, onError);
-    </script>
-    
+    <script src="https://cdn.jsdelivr.net/binaryjs/0.2.1/binary.min.js"></script>
+
+
     <section class="hero">
 
       <div class="hero-content">
@@ -43,7 +33,7 @@
 
           <div class="form-group">
             </br>
-              <center><button style="font-size:15px">Let's Talk <i class="fa fa-microphone"></i></button></center>
+              <center><button style="font-size:15px" onclick="startstopRecording()">Let's Talk <i class="fa fa-microphone"></i></button></center>
             </br>
               <textarea class="form-control margin-left-right" rows="15" id="comment"></textarea>
 
@@ -54,6 +44,7 @@
           <a href="/contact" class="btn btn-lg btn-primary">Get Started</a> -->
       </div>
     </section>
-
+  <!--  <button onclick="startRecording()">Start Recording</button><button onclick="stopRecording()">Stop Recording</button>-->
+    <script src="recorder.js"></script>
   </body>
 </html>

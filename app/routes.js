@@ -20,5 +20,5 @@ router.get('/contact', function(req, res){
   res.render('pages/contact')
 });
 router.post('/contact', function(req, res){
-   
+
 });
