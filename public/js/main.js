@@ -109,7 +109,7 @@ window.onload = function() {
 
 	// TEMP
 	outputContainer = document.getElementById("output");
-	// document.getElementById('start_button').onclick = startRecording;
+	document.getElementById('start_button').onclick = startRecording;
 
 	// initialize Web Audio variables
 	try {
@@ -131,6 +131,15 @@ window.onload = function() {
 		}, function(stream) {
 
 			var input = audioContext.createMediaStreamSource(stream);
+			//Create a filter
+			filter = audioContext.createBiquadFilter();
+      filter.Q.value = 8.30;
+      filter.frequency.value = 355;
+			//filter.gain.value = 3.0;
+			filter.gain.value = 0.0;
+      filter.type = 'bandpass';
+			input.connect(filter);
+
 
 			var audioRecorderConfig = {
 				errorCallback: function(x) {}
