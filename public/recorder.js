@@ -10,7 +10,7 @@
 
     if (navigator.getUserMedia) {
       navigator.getUserMedia({audio:true}, success, function(e) {
-        alert('Error capturing audio.');
+        alert('Error capturing audio.'+e);
       });
     } else alert('getUserMedia not supported in this browser.');
 
