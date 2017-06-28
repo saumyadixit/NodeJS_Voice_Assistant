@@ -15,13 +15,11 @@
     "express": "^4.15.3",
     "express-ejs-layouts": "^2.3.0",
     "ffmpeg": "0.0.4",
-    "flac": "^0.3.0",
+    "fluent-ffmpeg": "^2.1.2",
     "google-speech-api": "^1.2.0",
     "https": "^1.0.0",
     "linear16": "^1.0.1",
     "node-record-lpcm16": "^0.3.0",
-    "sox": "^0.1.0",
-    "sox-stream": "^2.0.1",
     "wav": "^1.0.1"
   }
 }

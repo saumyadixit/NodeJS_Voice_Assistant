@@ -38,19 +38,57 @@ https.createServer(options, app).listen(port, '0.0.0.0', function() {
 //    console.log('Listening to port:  ' + port);
 //});
 /*
+//Conversion to linear16
+const linear16 = require('linear16');
+try {
+
+
+    const params = {
+        input: './temp.wav',
+        output: './test.wav'
+    };
+
+    Promise.resolve(params)
+        .then(paths => {
+            //countdown.message(`Converting ${path.basename(paths.input)} to ${path.basename(paths.output)}...`);
+            //return linear16(paths.input, paths.output);
+            return linear16('./test.wav', './output.wav');
+        })
+        .then(wavFile => {
+            //countdown.message(`Storing ${path.basename(wavFile)}...`);
+            //return cloudStore(wavFile);
+        })
+        .then(storageFile => {
+            //countdown.message(`Transcribing ${storageFile.name}...`);
+            //return cloudSpeech('gs://messages-audio/' + storageFile.name);
+        })
+        .then(transcription => {
+            //countdown.stop();
+            //console.log(chalk.green(transcription));
+        })
+        .catch(err => console.error(err));
+
+
+} catch (err) {
+    //console.log(chalk.red(err.message));
+    console.error(err);
+}
+//Conversion to linear16 complete
+*/
+//Speech recognition starts
 var speech = require('@google-cloud/speech')({
     projectId: 'my-project-1479251894350',
     keyFilename: './VoiceRecog-6083eb45cc69.json'
 });
 
 const request = {
-    encoding: 'FLAC',
+    encoding: 'LINEAR16',
     sampleRateHertz: 16000,
     languageCode: 'en-US'
 };
 
 // Detects speech in the audio file
-speech.recognize('temp.flac', request)
+speech.recognize('output.wav', request)
       .then((results) => {
         const transcription = results[0];
         console.log(`Transcription: ${transcription}`);
@@ -58,7 +96,7 @@ speech.recognize('temp.flac', request)
       .catch((err) => {
         console.error('ERROR:', err);
 });
-*/
+//Speech recognition ends
 binaryServer = BinaryServer({port: 9001});
 
 binaryServer.on('connection', function(client) {
