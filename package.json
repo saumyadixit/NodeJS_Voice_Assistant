@@ -17,6 +17,7 @@
     "ffmpeg": "0.0.4",
     "flac": "^0.3.0",
     "google-speech-api": "^1.2.0",
+    "https": "^1.0.0",
     "linear16": "^1.0.1",
     "node-record-lpcm16": "^0.3.0",
     "sox": "^0.1.0",
