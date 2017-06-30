@@ -76,6 +76,7 @@ try {
 //Conversion to linear16 complete
 */
 //Speech recognition starts
+/*
 var speech = require('@google-cloud/speech')({
     projectId: 'my-project-1479251894350',
     keyFilename: './VoiceRecog-6083eb45cc69.json'
@@ -96,6 +97,7 @@ speech.recognize('output.wav', request)
       .catch((err) => {
         console.error('ERROR:', err);
 });
+*/
 //Speech recognition ends
 binaryServer = BinaryServer({port: 9001});
 
