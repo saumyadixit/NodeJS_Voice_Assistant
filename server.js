@@ -11,7 +11,7 @@ var cert = fs.readFileSync('./cert/cert-20170627-165927.crt' );
 var ca = fs.readFileSync( './cert/cert-key-20170627-165927.p12' );
 
 //var sox = require('sox');
-var outFile = 'demo.wav';
+var outFile = 'InpFile';
 
 var app = express();
 var port = 8080;
@@ -100,9 +100,11 @@ speech.recognize('output.wav', request)
 */
 //Speech recognition ends
 binaryServer = BinaryServer({port: 9001});
-
+var count = 0;
 binaryServer.on('connection', function(client) {
   console.log('new connection');
+  var outFile = "File"+count+".wav";
+  count++;
   var fileWriter = new wav.FileWriter(outFile, {
     channels: 1,
     sampleRate: 48000,

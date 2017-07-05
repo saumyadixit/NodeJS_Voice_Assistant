@@ -1,222 +1,241 @@
-var recognizer;
-var recorder;
-var callbackManager;
-var audioContext;
+'use strict';
 
-// Only when both recorder and recognizer are ready do we have a ready application
-// I'm keeping these so I can use them with other applications
-var recorderReady = false;
-var recognizerReady = false;
+// These will be initialized later
+var recognizer, isRecognizerReady, recorder, callbackManager, audioContext, outputContainer;
 
-var keywordIndicator = document.getElementById('recording_indicator');
+var startBtn = document.getElementById('startBtn');
+var stopBtn = document.getElementById('stopBtn');
+var recordingIndicator = document.getElementById('recordingIndicator');
+var currentStatus = document.getElementById('currentStatus');
 
-// TEMP
-var outputContainer;
+// Only when both recorder and recognizer do we have a ready application
+var isRecorderReady = isRecognizerReady = false;
 
-// the phones we want to detect
-// the phones we want to detect
-var wordList = [
-   	["CALL", "K AO L"],
-	["FIND", "F AY N D"],
-	["EMAIL", "IY M EY L"],
-	["OPEN", "OW P AH N"],
-	["TIME", "T AY M"]
-];
-
-var grammars = [{
-	g: {
-		numStates: 1,
-		start: 0,
-		end: 0,
-		transitions: [{
-			from: 0,
-			to: 0,
-			word: "CALL"
-		}, {
-			from: 0,
-			to: 0,
-			word: "FIND"
-		}, {
-			from: 0,
-			to: 0,
-			word: "EMAIL"
-		}, {
-			from: 0,
-			to: 0,
-			word: "OPEN"
-		}, {
-			from: 0,
-			to: 0,
-			word: "TIME"
-		}]
-	}
-}];
-
-// When the page is loaded we spawn a new recognizer worker and call getUserMedia to request access to the microphone
-window.onload = function() {
-
-	recognizer = new Worker('lib/recognizer.js');
-
-	callbackManager = new CallbackManager();
-
-	// TEMP
-	outputContainer = document.getElementById("output");
-	document.getElementById('start_button').onclick = startRecording;
-
-	// initialize Web Audio variables
-	try {
-
-		window.AudioContext = window.AudioContext || window.webkitAudioContext;
-		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-		window.URL = window.URL || window.webkitURL;
-
-		audioContext = new AudioContext();
-
-	} catch (e) {
-		// report incompatible browser
-	}
-
-	if (navigator.getUserMedia) {
-
-		navigator.getUserMedia({
-			audio: true
-		}, function(stream) {
-
-			var input = audioContext.createMediaStreamSource(stream);
-			//Create a filter
-			filter = audioContext.createBiquadFilter();
-      filter.Q.value = 8.30;
-      filter.frequency.value = 355;
-			//filter.gain.value = 3.0;
-			filter.gain.value = 0.0;
-      filter.type = 'bandpass';
-			input.connect(filter);
-
-
-			var audioRecorderConfig = {
-				errorCallback: function(x) {}
-			};
-
-			recorder = new AudioRecorder(input, audioRecorderConfig);
-
-			// If a recognizer is ready we pass it to the recorder
-			if (recognizer) {
-				recorder.consumers = [recognizer];
-			}
-
-			recorderReady = true;
-
-		}, function(e) {
-
-		});
-
-	}
-
-	recognizer.onmessage = function() {
-
-		// I need this nested event listener because the first time a message is triggered we need to trigger other things that we never need to trigger again
-		recognizer.onmessage = function(e) {
-
-			// if an id to be used with the callback manager
-			// this is needed to start the listening
-			if (e.data.hasOwnProperty('id')) {
-
-				var data = {};
-
-				if (e.data.hasOwnProperty('data')) {
-					data = e.data.data;
-				}
-
-				var callback = callbackManager.get(e.data['id']);
-
-				if (callback) {
-					callback(data);
-				}
-
-			}
-
-			// if a new hypothesis has been created
-			if (e.data.hasOwnProperty('hyp')) {
-
-				var hypothesis = e.data.hyp;
-
-				if (outputContainer) {
-					outputContainer.innerHTML = hypothesis;
-				}
-
-			}
-
-			// if an error occured
-			if (e.data.hasOwnProperty('status') && (e.data.status == "error")) {
-
-			}
-
-		};
-
-		// Once the worker is fully loaded, we can call the initialize function
-		// You can pass parameters to the recognizer, such as : {command: 'initialize', data: [["-hmm", "my_model"], ["-fwdflat", "no"]]}
-		postRecognizerJob({
-			command: 'initialize'
-		}, function() {
-
-			if (recorder) {
-				recorder.consumers = [recognizer];
-			}
-
-			postRecognizerJob({
-				command: 'addWords',
-				data: wordList
-			}, function() {
-				feedGrammar(grammars, 0);
-
-				startRecording();
-
-			});
-
-		});
-
-	};
-
-	recognizer.postMessage('');
-
-};
-
+/* A convenience function to post a message to the recognizer and associate
+ * a callback to its response
+ */
 function postRecognizerJob(message, callback) {
+  var msg = message || {};
 
-	var msg = message || {};
+  if (callbackManager) {
+    msg.callbackId = callbackManager.add(callback);
+  }
 
-	if (callbackManager) {
-		msg.callbackId = callbackManager.add(callback);
-	}
-
-	if (recognizer) {
-		recognizer.postMessage(msg);
-	}
-
+  if (recognizer) {
+    recognizer.postMessage(msg);
+  }
 }
 
-function feedGrammar(g, index, id) {
+/* This function initializes an instance of the recorder
+ * it posts a message right away and calls onReady when it
+ * is ready so that onmessage can be properly set
+ */
+function spawnWorker(workerURL, onReady) {
+  recognizer = new Worker(workerURL);
 
-	if (index < g.length) {
+  recognizer.onmessage = function(event) {
+    onReady(recognizer);
+  };
 
-		postRecognizerJob({
-			command: 'addGrammar',
-			data: g[index].g
-		}, function(id) {
-			feedGrammar(grammars, index + 1, {
-				id: id
-			});
-		});
-
-	} else {
-		recognizerReady = true;
-	}
-
+  recognizer.postMessage('');
 }
 
-// This starts recording. We first need to get the id of the grammar to use
+// To display the hypothesis sent by the recognizer
+function updateHyp(hyp) {
+  if (outputContainer) {
+    outputContainer.innerHTML = hyp;
+  }
+}
+
+/*
+ * This updates the UI when the app might be ready.
+ * Only when both recorder and recognizer are ready do we enable the buttons.
+ */
+function updateUI() {
+  if (isRecorderReady && isRecognizerReady) {
+    startBtn.disabled = stopBtn.disabled = false;
+  }
+}
+
+// This is just a logging window where we display the status
+function updateStatus(newStatus) {
+  currentStatus.innerHTML += ('<br/>' + newStatus);
+}
+
+// A not-so-great recording indicator
+function displayRecording(display) {
+  if (display) {
+    recordingIndicator.style.display = 'inline-block';
+  } else {
+    recordingIndicator.style.display = 'none';
+  }
+}
+
+/* Callback function once the user authorizes access to the microphone
+ * in it, we instantiate the recorder
+ */
+function startUserMedia(stream) {
+  var input = audioContext.createMediaStreamSource(stream);
+
+  // Firefox hack https://support.mozilla.org/en-US/questions/984179
+  window.firefox_audio_hack = input;
+
+  var audioRecorderConfig = {errorCallback: function(x) {updateStatus('Error from recorder: ' + x);}};
+
+  recorder = new AudioRecorder(input, audioRecorderConfig);
+
+  // If a recognizer is ready, we pass it to the recorder
+  if (recognizer) {
+    recorder.consumers = [recognizer];
+  }
+
+  isRecorderReady = true;
+  updateUI();
+  updateStatus('Audio recorder ready');
+}
+
+// This starts recording.
 function startRecording() {
-	if (recorder && recorder.start(0)) {
-		keywordIndicator.style.display = 'block';
-	}
+  if (recorder && recorder.start()) {
+    //Changes for Binary server
+    var client = new BinaryClient('ws://localhost:9001');
+    client.on('open', function() {
+      window.BinaryReady = true;
+      window.BinaryServer = client.createStream();
+    });
+    displayRecording(true);
+    //My changes for BinaryServer
+
+
+  }
 }
+
+// Stops recording
+function stopRecording() {
+  recorder && recorder.stop();
+  //BinaryServer
+  window.BinaryReady = false;
+  window.BinaryServer.end();
+  displayRecording(false);
+}
+
+/* Called once the recognizer is ready
+ * We then add the grammars to the input select tag and update the UI
+ */
+function recognizerReady() {
+  isRecognizerReady = true;
+  updateUI();
+  updateStatus('Recognizer ready');
+}
+
+// This initializes the recognizer.
+function initRecognizer() {
+  recognizer.postMessage({
+    command: 'load',
+    callbackId: callbackManager.add(
+      function() {
+        recognizerReady();
+        // We pass dictionary and keyword parameters to the recognizer
+        postRecognizerJob({
+          command: 'initialize',
+          data: [
+            ["-dict", "keyphrase.dict"],
+            ["-kws", "keyphrase.list"]
+          ]
+        }, function() {
+          startRecording();
+        });
+
+      }),
+      data: [
+        'keyphrase-list.js',
+        'keyphrase-dict.js'
+      ]
+  });
+}
+
+/* When the page is loaded, we spawn a new recognizer worker and call getUserMedia to request access to the microphone
+*/
+window.onload = function() {
+  outputContainer = document.getElementById('output');
+
+  updateStatus('Initializing web audio and speech recognizer, waiting for approval to access the microphone');
+  window.BinaryReady = false;
+  callbackManager = new CallbackManager();
+
+  spawnWorker('lib/recognizer.js', function(worker) {
+    // This is the onmessage function, once the worker is fully loaded
+    worker.onmessage = function(event) {
+      console.log('event', event.data.hyp);
+
+      // This is the case when we have a callback id to be called
+      if (event.data.hasOwnProperty('id')) {
+        var callback = callbackManager.get(event.data['id']);
+        var data = {};
+
+        if (event.data.hasOwnProperty('data')) {
+          data = event.data.data;
+        }
+
+        if (callback) {
+          callback(data);
+        }
+      }
+
+      // This is a case when the recognizer has a new hypothesis
+      if (event.data.hasOwnProperty('hyp')) {
+        var newHyp = event.data.hyp;
+
+        if (event.data.hasOwnProperty('final') &&  event.data.final) {
+          newHyp = 'Final: ' + newHyp;
+        }
+
+        updateHyp(newHyp);
+      }
+
+      // This is the case when we have an error
+      if (event.data.hasOwnProperty('status') && (event.data.status === 'error')) {
+        updateStatus('Error in ' + event.data.command + ' with code ' + event.data.code);
+      }
+    };
+
+    // Once the worker is fully loaded, we can call the initialize function
+    initRecognizer();
+  });
+
+
+  // The following is to initialize Web Audio
+  try {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    window.URL = window.URL || window.webkitURL;
+    audioContext = new AudioContext();
+  } catch (error) {
+    console.error(error);
+    updateStatus('Error initializing Web Audio browser');
+  }
+
+  if (navigator.getUserMedia) {
+    navigator.getUserMedia({
+      audio: {
+        mandatory: {
+          googEchoCancellation: false,
+          googAutoGainControl: false,
+          googNoiseSuppression: false,
+          googHighpassFilter: false
+        },
+        optional: []
+      }
+    }, startUserMedia, function(e) {
+      updateStatus('No live audio input in this browser');
+    });
+  } else {
+    updateStatus('No web audio support in this browser');
+  }
+
+  // Wiring JavaScript to the UI
+  startBtn.disabled = true;
+  stopBtn.disabled = true;
+  startBtn.onclick = startRecording;
+  stopBtn.onclick = stopRecording;
+};
