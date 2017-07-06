@@ -1,70 +1,81 @@
 body {
-  background-image: url('http://cdn26.us1.fansshare.com/photo/abstract/abstract-white-desktop-background-white-1481209899.jpg') ;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: url('/img/backgroud.jpg') ;
 }
-
-h1 {
-    text-shadow: 3px 2px #F5A6A6;
+.div-chats{
+  float:left;
+  width:800px;
+  overflow-y: auto;
+  height: 500px;
 }
-.post-container {
-    margin-left: 10%;
-    margin-right: 20%;
-    overflow: auto
+.speech-wrapper {
+  padding: 5px 5px;
 }
-.post-thumb {
-    float: left
+.speech-wrapper .bubble {
+  width: 240px;
+  height: auto;
+  display: block;
+  background: #ccffe6;
+  border-radius: 4px;
+  box-shadow: 2px 8px 5px #000;
+  position: relative;
+  margin: 0 0 25px;
 }
-.post-thumb img {
-    display: block
+.speech-wrapper .bubble.alt {
+  margin: 0 0 0 60px;
 }
-.post-content {
-    margin-left: 10px
+.speech-wrapper .bubble .txt {
+  padding: 8px 55px 8px 14px;
 }
-
-
-.cover{
-	width:100%;
-	height:100%;
-	background:#3dc0f1;
+.speech-wrapper .bubble .txt .name {
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0 0 4px;
+  color: #3498db;
 }
-.icon{
-	position:absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	margin:auto;
-	display:block;
+.speech-wrapper .bubble .txt .name span {
+  font-weight: normal;
+  color: #b3b3b3;
 }
-
-/*THE ARTIFAKT ;) */
-.microphone{
-	width:2em;
-	height:6em;
-	background:#fff;
-	border-radius:1em;
+.speech-wrapper .bubble .txt .name.alt {
+  color: #2ecc71;
 }
-.microphone:before{
-	content:"";
-	position:absolute;
-	bottom:-1em;
-	left:-1em;
-	width:4em;
-	height:0.5em;
-	background:#fff;
+.speech-wrapper .bubble .txt .message {
+  font-size: 12px;
+  margin: 0;
+  color: #2b2b2b;
 }
-.microphone:after{
-	content:"";
-	position:absolute;
-	bottom:-0.5em;
-	left:-0.5em;
-	width:3em;
-	height:3em;
-	border:0.3em solid #fff;
-	border-top:0.3em solid #3dc0f1;
-	border-radius:0 0 1.5em 1.5em;
+.speech-wrapper .bubble .txt .timestamp {
+  font-size: 11px;
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  text-transform: uppercase;
+  color: #999;
 }
-
-.margin-left-right {
-width:80%;
-margin-left:10%;
-margin-right:10%;}
+.speech-wrapper .bubble .bubble-arrow {
+  position: absolute;
+  width: 0;
+  bottom: 42px;
+  left: -16px;
+  height: 0;
+}
+.speech-wrapper .bubble .bubble-arrow.alt {
+  right: -2px;
+  bottom: 40px;
+  left: auto;
+}
+.speech-wrapper .bubble .bubble-arrow:after {
+  content: "";
+  position: absolute;
+  border: 0 solid transparent;
+  border-top: 9px solid #ccffe6;
+  border-radius: 0 20px 0;
+  width: 15px;
+  height: 30px;
+  transform: rotate(145deg);
+}
+.speech-wrapper .bubble .bubble-arrow.alt:after {
+  transform: rotate(45deg) scaleY(-1);
+}

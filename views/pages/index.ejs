@@ -1,61 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>My Node Site</title>
 
-	<head>
-		<meta charset="utf-8">
-		<title>PocketSphinx.js</title>
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+        <center>
+        <div>
+          <div><img src="/img/assistant.jpg" alt="Sydney" width="130px" height="150px"></div>
+          <div class="div-chats">
 
-		<style>
-			body {
-				text-align: center;
-				font-family: Arial, Helvetica, sans-serif;
-			}
-			button {
-				background: #e6e6e6;
-				background: -moz-linear-gradient(top, #e6e6e6 0%, #c8c8c8 100%);
-				background: -ms-linear-gradient(top, #e6e6e6 0%, #c8c8c8 100%);
-				background: -o-linear-gradient(top, #e6e6e6 0%, #c8c8c8 100%);
-				background: -webkit-linear-gradient(top, #e6e6e6 0%, #c8c8c8 100%);
-				background: linear-gradient(top, #e6e6e6 0%, #c8c8c8 100%);
-				border-radius: 3px;
-				border: 1px solid #969696;
-				color: #323232;
-				cursor: pointer;
-				display: inline-block;
-				font-size: 1em;
-				font-weight: bold;
-				margin: .2em;
-				overflow: hidden;
-				padding-left: 0.5em;
-				padding-right: 0.5em;
-				white-space: nowrap;
-			}
-		</style>
-
-	</head>
-
-	<body>
+							<div class="speech-wrapper">
+						  <div class="bubble">
+						    <div class="txt">
+						      <p class="name">Sydney</p>
+						      <p class="message">Hey, I am Sydney, Your Personal Assistant !</p>
+						      <span class="timestamp">10:20 pm</span>
+						    </div>
+						    <div class="bubble-arrow"></div>
+						  </div>
+							</div>
+							<div class="speech-wrapper">
+						  <div class="bubble">
+						    <div class="txt">
+						      <p class="name">Sydney</p>
+						      <p class="message">How can I help you today?</p>
+						      <span class="timestamp">10:20 pm</span>
+						    </div>
+						    <div class="bubble-arrow"></div>
+						  </div>
+							</div>
 
 
-		<h2>Pocketsphinx.js Multiple Keyword example</h2>
-    <ul>
-      <li>Press "Start" and speak. Try saying: "Dog", "Cat", or "Fish".</li>
-    </ul>
-    <button id="startBtn">Start</button>
-    <button id="stopBtn">Stop</button>
-    <span id="recordingIndicator"></span>
-    <h2>Recognition Output</h2>
-    <div id="output">
-    </div>
-    <h2>Status</h2>
-    <div id="currentStatus">Loading page</div>
+							<div class="speech-wrapper">
+						  <div class="bubble">
+						    <div class="txt">
+						      <p class="name">Sydney</p>
+						      <p class="message">How can I help you today?</p>
+						      <span class="timestamp">10:20 pm</span>
+						    </div>
+						    <div class="bubble-arrow"></div>
+						  </div>
+							</div>
+							<div class="speech-wrapper">
+						  <div class="bubble">
+						    <div class="txt">
+						      <p class="name">Sydney</p>
+						      <p class="message">How can I help you today?</p>
+						      <span class="timestamp">10:20 pm</span>
+						    </div>
+						    <div class="bubble-arrow"></div>
+						  </div>
+							</div>
+							<div class="speech-wrapper">
+						  <div class="bubble">
+						    <div class="txt">
+						      <p class="name">Sydney</p>
+						      <p class="message">How can I help you today?</p>
+						      <span class="timestamp">10:20 pm</span>
+						    </div>
+						    <div class="bubble-arrow"></div>
+						  </div>
+							</div>
+							<div class="speech-wrapper">
+						  <div class="bubble alt">
+						    <div class="txt">
+						      <p class="name alt">Sydney</p>
+						      <p class="message">How can I help you today?</p>
+						      <span class="timestamp">10:20 pm</span>
+						    </div>
+						    <div class="bubble-arrow alt"></div>
+						  </div>
+							</div>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script src="lib/binary.js"></script>
-		<script src="js/main.js"></script>
-		<script src="lib/audioRecorder.js"></script>
-		<script src="lib/callbackManager.js"></script>
 
-	</body>
 
+
+
+
+
+
+
+
+
+
+						</br>
+						</div>
+						<center>
+							<button id="startBtn">Start</button>
+							<button id="stopBtn">Stop</button>
+						</center>
+				</br>
+					<span id="recordingIndicator"></span>
+					<h2>Recognition Output</h2>
+					<div id="output"></div>
+					<h2>Status</h2>
+					<div id="currentStatus">Loading page</div>
+
+
+      </div>
+		</center>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+			<script src="lib/binary.js"></script>
+			<script src="js/main.js"></script>
+			<script src="lib/audioRecorder.js"></script>
+			<script src="lib/callbackManager.js"></script>
+  </body>
 </html>
