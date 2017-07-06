@@ -37,8 +37,14 @@ router.post('/speech', function(req, res){
 
                        usercommand.keyword = true;
                        usercommand.detected_text = transcription;
-                       usercommand.intent = "recog";
-
+                       usercommand.intent = "unknown";
+                      //
+                      //Test time command
+                      if(transcription.includes("time"))
+                      {
+                        usercommand.intent = "cur-time";
+                      }
+                      //
                res.send(JSON.stringify(usercommand));
                }, 5000);
            }, 5000);

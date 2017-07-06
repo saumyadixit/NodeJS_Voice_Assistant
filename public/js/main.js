@@ -72,14 +72,47 @@ function authGoogleTransform()
         console.log(items.keyword);
         console.log(items.detected_text);
         console.log(items.intent);
-        //console.log(items.username);
-        //console.log(items.password);
-        //alert(items.jsonData.username);
-        //alert(items.jsonData.password);
-         //$('#results').append('<div>'+item.interestingField+'</div>');
+        process_intent(items.intent, items.detected_text);
+
 
     }
  });
+}
+
+
+function process_intent(intent,txt) {
+    if(intent=="unknown")
+    {
+      update_chat(true,txt);
+      update_chat(false,"I am sorry, This function is not yet implemented!");
+    }
+    if(intent=="cur-time")
+    {
+      var timestamp = current_time();
+      update_chat(true,txt);
+      update_chat(false,"Sure, Its " + timestamp + " now!");
+    }
+}
+
+function update_chat(isUser, txt) {
+  var timestamp = current_time();
+  if(isUser)
+  {
+      //Load alternate chat css
+      document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble alt\"><div class=\"txt\"><p class=\"name alt\">Saumya</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow alt\"></div></div></div></br>";
+  }
+  else
+  {
+      //Load chat css
+      document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble\"><div class=\"txt\"><p class=\"name\">Sydney</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow\"></div></div></div>";
+  }
+}
+
+function current_time()
+{
+  var d = new Date(); // for now
+  var timestamp = d.getHours() +":"+d.getMinutes()+":"+d.getSeconds();
+  return timestamp;
 }
 /*
  * This updates the UI when the app might be ready.
