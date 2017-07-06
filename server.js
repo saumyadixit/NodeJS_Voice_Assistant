@@ -14,6 +14,10 @@ var ca = fs.readFileSync( './cert/cert-key-20170627-165927.p12' );
 var outFile = 'InpFile';
 
 var app = express();
+var bodyParser = require('body-parser');
+// parse an HTML body into a string
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 var port = 8080;
 var router = require('./app/routes');
 app.use('/', router);
@@ -22,6 +26,8 @@ app.set('view engine','ejs');
 app.use(expressLayouts);
 //Set static files (css and image)public files locations
 app.use(express.static(__dirname+'/public'));
+
+
 //start the server
 var options = {
   key: key,

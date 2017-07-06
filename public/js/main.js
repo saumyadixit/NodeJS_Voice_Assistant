@@ -201,6 +201,32 @@ window.onload = function() {
 
     // Once the worker is fully loaded, we can call the initialize function
     initRecognizer();
+
+    var credentials = new Object();
+    credentials.username = "username";
+    credentials.password = "password";
+    //Test AJAX call to backend
+    $.ajax({
+      url: '/search',
+      data: {
+        jsonData: JSON.stringify(credentials)
+        // or jsonData: JSON.stringify(credentials)   (newest browsers only)
+        },
+      dataType: 'json',
+      type: 'POST',
+      success: function(items) {
+          /* do something with items here */
+          // You will likely want a template so you don't have to format the string by hand
+          console.log(items);
+          console.log(items.username);
+          console.log(items.password);
+          //alert(items.jsonData.username);
+          //alert(items.jsonData.password);
+           //$('#results').append('<div>'+item.interestingField+'</div>');
+
+      }
+   });
+
   });
 
 
