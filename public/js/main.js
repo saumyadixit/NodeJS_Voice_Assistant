@@ -10,7 +10,7 @@ var currentStatus = document.getElementById('currentStatus');
 
 // Only when both recorder and recognizer do we have a ready application
 var isRecorderReady = isRecognizerReady = false;
-
+var keyword_spotted = false;
 /* A convenience function to post a message to the recognizer and associate
  * a callback to its response
  */
@@ -42,11 +42,45 @@ function spawnWorker(workerURL, onReady) {
 
 // To display the hypothesis sent by the recognizer
 function updateHyp(hyp) {
+  //console.log("Hyyypp :"+hyp+":");
   if (outputContainer) {
     outputContainer.innerHTML = hyp;
+
   }
 }
 
+function authGoogleTransform()
+{
+  var usercommand = new Object();
+  usercommand.keyword = keyword_spotted;
+  usercommand.detected_text = "";
+  usercommand.intent = "";
+  //Test AJAX call to backend
+  $.ajax({
+    url: '/speech',
+    data: {
+      jsonData: JSON.stringify(usercommand)
+      // or jsonData: JSON.stringify(credentials)   (newest browsers only)
+      },
+    dataType: 'json',
+    type: 'POST',
+    success: function(items) {
+        /* do something with items here */
+        // You will likely want a template so you don't have to format the string by hand
+
+        console.log(items);
+        console.log(items.keyword);
+        console.log(items.detected_text);
+        console.log(items.intent);
+        //console.log(items.username);
+        //console.log(items.password);
+        //alert(items.jsonData.username);
+        //alert(items.jsonData.password);
+         //$('#results').append('<div>'+item.interestingField+'</div>');
+
+    }
+ });
+}
 /*
  * This updates the UI when the app might be ready.
  * Only when both recorder and recognizer are ready do we enable the buttons.
@@ -114,9 +148,14 @@ function startRecording() {
 function stopRecording() {
   recorder && recorder.stop();
   //BinaryServer
-  window.BinaryReady = false;
-  window.BinaryServer.end();
+  //window.BinaryReady = false;
+  //window.BinaryServer.end();
   displayRecording(false);
+  //if(keyword_spotted)
+  //{
+  //  authGoogleTransform();
+  //}
+  //keyword_spotted = false;
 }
 
 /* Called once the recognizer is ready
@@ -187,7 +226,20 @@ window.onload = function() {
         var newHyp = event.data.hyp;
 
         if (event.data.hasOwnProperty('final') &&  event.data.final) {
-          newHyp = 'Final: ' + newHyp;
+          //newHyp = 'Final: ' + newHyp;
+          window.BinaryReady = false;
+          window.BinaryServer.end();
+
+          if(newHyp!="")
+          {
+            console.log("Keyword Spotted");
+            keyword_spotted=true;
+            setTimeout(function(){
+                authGoogleTransform();
+            }, 5000);
+          }
+          keyword_spotted = false;
+          //authGoogleTransform();
         }
 
         updateHyp(newHyp);
@@ -201,31 +253,6 @@ window.onload = function() {
 
     // Once the worker is fully loaded, we can call the initialize function
     initRecognizer();
-
-    var credentials = new Object();
-    credentials.username = "username";
-    credentials.password = "password";
-    //Test AJAX call to backend
-    $.ajax({
-      url: '/search',
-      data: {
-        jsonData: JSON.stringify(credentials)
-        // or jsonData: JSON.stringify(credentials)   (newest browsers only)
-        },
-      dataType: 'json',
-      type: 'POST',
-      success: function(items) {
-          /* do something with items here */
-          // You will likely want a template so you don't have to format the string by hand
-          console.log(items);
-          console.log(items.username);
-          console.log(items.password);
-          //alert(items.jsonData.username);
-          //alert(items.jsonData.password);
-           //$('#results').append('<div>'+item.interestingField+'</div>');
-
-      }
-   });
 
   });
 
