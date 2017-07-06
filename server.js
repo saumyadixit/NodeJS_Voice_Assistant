@@ -93,14 +93,11 @@ function convert_format(input_file, output_file){
               })
               .then(wavFile => {
                   recognize_google();
-                  //countdown.message(`Storing ${path.basename(wavFile)}...`);
-                  //return cloudStore(wavFile);
               })
               .catch(err => console.error(err));
 
 
       } catch (err) {
-          //console.log(chalk.red(err.message));
           console.error(err);
       }
       //Conversion to linear16 complete

@@ -60,13 +60,12 @@ function authGoogleTransform()
     url: '/speech',
     data: {
       jsonData: JSON.stringify(usercommand)
-      // or jsonData: JSON.stringify(credentials)   (newest browsers only)
+
       },
     dataType: 'json',
     type: 'POST',
     success: function(items) {
         /* do something with items here */
-        // You will likely want a template so you don't have to format the string by hand
 
         console.log(items);
         console.log(items.keyword);
@@ -90,7 +89,7 @@ function process_intent(intent,txt) {
     {
       var timestamp = current_time();
       update_chat(true,txt);
-      update_chat(false,"Sure, Its " + timestamp + " now!");
+      update_chat(false,"Current time is " + timestamp + " !");
     }
 }
 
@@ -180,15 +179,8 @@ function startRecording() {
 // Stops recording
 function stopRecording() {
   recorder && recorder.stop();
-  //BinaryServer
-  //window.BinaryReady = false;
-  //window.BinaryServer.end();
   displayRecording(false);
-  //if(keyword_spotted)
-  //{
-  //  authGoogleTransform();
-  //}
-  //keyword_spotted = false;
+
 }
 
 /* Called once the recognizer is ready
@@ -215,7 +207,7 @@ function initRecognizer() {
             ["-kws", "keyphrase.list"]
           ]
         }, function() {
-          startRecording();
+          //startRecording();
         });
 
       }),

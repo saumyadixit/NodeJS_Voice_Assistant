@@ -10,7 +10,6 @@ var router = express.Router();
 module.exports = router;
 //Route for Home Page
 router.get('/', function(req, res){
-  //res.send('Hello World');
   res.render('pages/index')
 });
 
@@ -33,11 +32,9 @@ router.post('/speech', function(req, res){
                transcription = recognize_google(output_file);
                setTimeout(function(){
                    var usercommand = new Object();
-                   //if(txt["keyword"])
-
-                       usercommand.keyword = true;
-                       usercommand.detected_text = transcription;
-                       usercommand.intent = "unknown";
+                   usercommand.keyword = true;
+                   usercommand.detected_text = transcription;
+                   usercommand.intent = "unknown";
                       //
                       //Test time command
                       if(transcription.includes("time"))
@@ -50,9 +47,7 @@ router.post('/speech', function(req, res){
            }, 5000);
 
 
-   //MySearch.doSearch(search_form,function(err,items) {
-   //     res.send(items);
-   //});
+
 });
 
 
@@ -96,7 +91,7 @@ function convert_format(input_file, output_file){
 
 
       } catch (err) {
-          //console.log(chalk.red(err.message));
+
           console.error(err);
       }
 
@@ -119,7 +114,7 @@ function recognize_google(input_file){
           sampleRateHertz: 16000,
           languageCode: 'en-US'
       };
-      //var transcription = "Null";
+
       // Detects speech in the audio file
       speech.recognize(input_file, request)
             .then((results) => {
