@@ -261,7 +261,7 @@ window.onload = function() {
             keyword_spotted=true;
             setTimeout(function(){
                 authGoogleTransform();
-              }, 5000);
+              }, 1000);
           }
           keyword_spotted = false;
           //authGoogleTransform();
