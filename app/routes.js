@@ -43,8 +43,8 @@ router.post('/speech', function(req, res){
                       }
                       //
                res.send(JSON.stringify(usercommand));
-             }, 2000);
-           }, 2000);
+             }, 5000);
+           }, 5000);
 
 
 
