@@ -44,7 +44,10 @@ function spawnWorker(workerURL, onReady) {
 function updateHyp(hyp) {
   //console.log("Hyyypp :"+hyp+":");
   if (outputContainer) {
-    outputContainer.innerHTML = hyp;
+    //Change
+    if(hyp!="")
+      outputContainer.innerHTML="<div>True</div>";
+    //outputContainer.innerHTML = hyp;
 
   }
 }
@@ -162,6 +165,7 @@ function startUserMedia(stream) {
 
 // This starts recording.
 function startRecording() {
+  outputContainer.innerHTML="";
   if (recorder && recorder.start()) {
     //Changes for Binary server
     var client = new BinaryClient('ws://localhost:9001');
