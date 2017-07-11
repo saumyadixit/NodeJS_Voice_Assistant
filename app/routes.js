@@ -13,7 +13,11 @@ router.get('/', function(req, res){
   res.render('pages/index')
 });
 
+
+var http = require('http');
+
 var transcription;
+var output_intent;
 //Test run for ajax callback
 router.post('/speech', function(req, res){
 
@@ -27,23 +31,15 @@ router.post('/speech', function(req, res){
        var output_file = "File"+(count-1)+"_conv.wav";
 
            convert_format(input_file, output_file);
-
+           transcription ="";
            setTimeout(function(){
                transcription = recognize_google(output_file);
                setTimeout(function(){
-                   var usercommand = new Object();
-                   usercommand.keyword = true;
-                   usercommand.detected_text = transcription;
-                   usercommand.intent = "unknown";
-                      //
-                      //Test time command
-                      if(transcription.includes("time"))
-                      {
-                        usercommand.intent = "cur-time";
-                      }
-                      //
-               res.send(JSON.stringify(usercommand));
-             }, 5000);
+                 output_intent = get_intent(transcription);
+                 setTimeout(function(){
+                    res.send(output_intent);
+               }, 5000);
+             }, 10000);
            }, 5000);
 
 
@@ -64,7 +60,43 @@ router.post('/contact', function(req, res){
 });
 
 
+//Make get call to Spring Boot
 
+function get_intent(transcription){
+    transcription=encodeURIComponent(transcription.trim());
+    var optionsget = {
+        host : 'localhost', // here only the domain name
+        // (no http/https !)
+        port : 4050,
+        path : '/process?text='+transcription, // the rest of the url with parameters if needed
+        method : 'POST' // do GET
+    };
+
+    console.info('Options prepared:');
+    console.info(optionsget);
+    console.info('Do the GET call');
+
+    // do the GET request
+    var reqGet = http.request(optionsget, function(res) {
+        console.log("statusCode: ", res.statusCode);
+
+        res.on('data', function(chunk) {
+            console.log('Spring Boot Call Processed .. ')
+            console.log('Output : ' + chunk);
+            output_intent=chunk;
+            return chunk;
+            //process.stdout.write(d);
+            //console.info('\n\nCall completed');
+        });
+
+    });
+
+    reqGet.end();
+    reqGet.on('error', function(e) {
+        console.error(e);
+    });
+    return output_intent;
+}
 
 //Conversion to linear16
 
@@ -85,7 +117,7 @@ function convert_format(input_file, output_file){
               .then(wavFile => {
                   //Conversion done
                   wait = false;
-
+                  console.log("File Conversion Completed .. ");
               })
               .catch(err => console.error(err));
 
@@ -112,13 +144,17 @@ function recognize_google(input_file){
       const request = {
           encoding: 'LINEAR16',
           sampleRateHertz: 16000,
-          languageCode: 'en-US'
+          languageCode: 'en-US',
+          speechContexts: {
+              'phrases':['Saumya','Dixit','Joydeep','Roy']
+          }
       };
 
       // Detects speech in the audio file
       speech.recognize(input_file, request)
             .then((results) => {
               transcription = results[0];
+              console.log("Google Speech Transcription Completed .. ");
               console.log(`Transcription: ${transcription}`);
               return transcription;
             })

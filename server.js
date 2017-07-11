@@ -36,10 +36,53 @@ var options = {
   ca: ca
 };
 
+
 var https = require('https');
 https.createServer(options, app).listen(port, '0.0.0.0', function() {
     console.log('Listening to port:  ' + port);
 });
+
+
+var http = require('http');
+/*
+Test connection with Spring Boot server
+
+var optionsget = {
+    host : 'localhost', // here only the domain name
+    // (no http/https !)
+    port : 4050,
+    path : '/process?text=call%20Saumya%20Dixit', // the rest of the url with parameters if needed
+    method : 'POST' // do GET
+};
+
+console.info('Options prepared:');
+console.info(optionsget);
+console.info('Do the GET call');
+
+// do the GET request
+var reqGet = http.request(optionsget, function(res) {
+    console.log("statusCode: ", res.statusCode);
+    // uncomment it for header details
+//  console.log("headers: ", res.headers);
+
+
+    res.on('data', function(chunk) {
+        console.info('GET result:\n');
+        console.log('Output : ' + chunk);
+        //process.stdout.write(d);
+        console.info('\n\nCall completed');
+    });
+
+});
+
+reqGet.end();
+reqGet.on('error', function(e) {
+    console.error(e);
+});
+
+Test connection with Spring Boot server
+*/
+
 
 //BinaryServer code starts
 binaryServer = BinaryServer({port: 9001});

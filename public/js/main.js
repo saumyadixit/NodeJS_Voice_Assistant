@@ -71,10 +71,15 @@ function authGoogleTransform()
         /* do something with items here */
 
         console.log(items);
-        console.log(items.keyword);
-        console.log(items.detected_text);
+        console.log(items.text);
         console.log(items.intent);
-        process_intent(items.intent, items.detected_text);
+        console.log(items.full_name);
+        console.log(items.last_name);
+        console.log(items.first_name);
+        console.log(items.application_name);
+
+
+        process_intent(items.intent, items.text, items.full_name,items.last_name,items.first_name,items.application_name);
 
 
     }
@@ -82,19 +87,46 @@ function authGoogleTransform()
 }
 
 
-function process_intent(intent,txt) {
+function process_intent(intent,text,full_name,last_name,first_name,application_name) {
+    text = text.toProperCase();
     if(intent=="unknown")
     {
-      update_chat(true,txt);
+      update_chat(true,text);
       update_chat(false,"I am sorry, This function is not yet implemented!");
     }
-    if(intent=="cur-time")
+    if(intent=="time")
     {
       var timestamp = current_time();
-      update_chat(true,txt);
+      update_chat(true,text);
       update_chat(false,"Current time is " + timestamp + " !");
     }
+    if(intent=="call")
+    {
+      first_name = first_name.toProperCase();
+      last_name = last_name.toProperCase();
+      full_name = last_name + ", " + first_name;
+      update_chat(true,text);
+      update_chat(false,"Calling " + full_name + " !");
+    }
+    if(intent=="find")
+    {
+      first_name = first_name.toProperCase();
+      last_name = last_name.toProperCase();
+      full_name = last_name + ", " + first_name;
+      update_chat(true,text);
+      update_chat(false,"Searching for " + full_name + " in your contacts!");
+    }
+    if(intent=="open")
+    {
+      application_name = application_name.toProperCase();
+      update_chat(true,text);
+      update_chat(false,"Opening " + application_name + " !");
+    }
 }
+
+String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
 
 function update_chat(isUser, txt) {
   var timestamp = current_time();
@@ -143,6 +175,7 @@ function displayRecording(display) {
 /* Callback function once the user authorizes access to the microphone
  * in it, we instantiate the recorder
  */
+
 function startUserMedia(stream) {
   var input = audioContext.createMediaStreamSource(stream);
 
