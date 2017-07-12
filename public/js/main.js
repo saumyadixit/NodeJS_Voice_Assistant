@@ -201,7 +201,8 @@ function startRecording() {
   outputContainer.innerHTML="";
   if (recorder && recorder.start()) {
     //Changes for Binary server
-    var client = new BinaryClient('ws://localhost:9001');
+    var ip = location.host;
+    var client = new BinaryClient('wss://'+ip);
     client.on('open', function() {
       window.BinaryReady = true;
       window.BinaryServer = client.createStream();

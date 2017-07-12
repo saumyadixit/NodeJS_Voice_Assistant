@@ -38,54 +38,22 @@ var options = {
 
 
 var https = require('https');
-https.createServer(options, app).listen(port, '0.0.0.0', function() {
+httpsServer = https.createServer(options, app);
+httpsServer.listen(port, '0.0.0.0', function() {
     console.log('Listening to port:  ' + port);
 });
 
 
 var http = require('http');
-/*
-Test connection with Spring Boot server
-
-var optionsget = {
-    host : 'localhost', // here only the domain name
-    // (no http/https !)
-    port : 4050,
-    path : '/process?text=call%20Saumya%20Dixit', // the rest of the url with parameters if needed
-    method : 'POST' // do GET
-};
-
-console.info('Options prepared:');
-console.info(optionsget);
-console.info('Do the GET call');
-
-// do the GET request
-var reqGet = http.request(optionsget, function(res) {
-    console.log("statusCode: ", res.statusCode);
-    // uncomment it for header details
-//  console.log("headers: ", res.headers);
-
-
-    res.on('data', function(chunk) {
-        console.info('GET result:\n');
-        console.log('Output : ' + chunk);
-        //process.stdout.write(d);
-        console.info('\n\nCall completed');
-    });
-
-});
-
-reqGet.end();
-reqGet.on('error', function(e) {
-    console.error(e);
-});
-
-Test connection with Spring Boot server
-*/
 
 
 //BinaryServer code starts
-binaryServer = BinaryServer({port: 9001});
+
+
+binaryServer = BinaryServer(
+  {
+    server: httpsServer
+  });
 count = 0;
 binaryServer.on('connection', function(client) {
   console.log('new connection');
@@ -110,67 +78,3 @@ binaryServer.on('connection', function(client) {
       });
   });
 });
-
-
-function process_audio()
-{
-  var input_file = "File"+(count-1)+".wav";
-  var output_file = "File"+(count-1)+"_conv.wav";
-  convert_format(input_file, output_file);
-  var transcription = recognize_google(output_file);
-  return transcription;
-};
-//Conversion to linear16
-
-
-function convert_format(input_file, output_file){
-      try {
-          const params = {
-              input: input_file,
-              output: output_file
-          };
-
-          Promise.resolve(params)
-              .then(paths => {
-                  return linear16('./test.wav', './output.wav');
-              })
-              .then(wavFile => {
-                  recognize_google();
-              })
-              .catch(err => console.error(err));
-
-
-      } catch (err) {
-          console.error(err);
-      }
-      //Conversion to linear16 complete
-};
-
-
-//Speech recognition starts
-
-function recognize_google(input_file){
-      var speech = require('@google-cloud/speech')({
-          projectId: 'my-project-1479251894350',
-          keyFilename: './VoiceRecog-6083eb45cc69.json'
-      });
-
-      const request = {
-          encoding: 'LINEAR16',
-          sampleRateHertz: 16000,
-          languageCode: 'en-US'
-      };
-
-      // Detects speech in the audio file
-      speech.recognize(input_file, request)
-            .then((results) => {
-              const transcription = results[0];
-              console.log(`Transcription: ${transcription}`);
-            })
-            .catch((err) => {
-              console.error('ERROR:', err);
-      });
-      return transcription;
-};
-
-//Speech recognition ends
