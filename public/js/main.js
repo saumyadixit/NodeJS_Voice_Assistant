@@ -98,7 +98,7 @@ function process_intent(intent,text,full_name,last_name,first_name,application_n
     {
       var timestamp = current_time();
       update_chat(true,text);
-      update_chat(false,"Current time is " + timestamp + " !");
+      update_chat(false,"Sure, Current time is " + timestamp + " !");
     }
     if(intent=="call")
     {
@@ -106,7 +106,7 @@ function process_intent(intent,text,full_name,last_name,first_name,application_n
       last_name = last_name.toProperCase();
       full_name = last_name + ", " + first_name;
       update_chat(true,text);
-      update_chat(false,"Calling " + full_name + " !");
+      update_chat(false,"Okay, Calling " + full_name + " !");
     }
     if(intent=="find")
     {
@@ -120,7 +120,7 @@ function process_intent(intent,text,full_name,last_name,first_name,application_n
     {
       application_name = application_name.toProperCase();
       update_chat(true,text);
-      update_chat(false,"Opening " + application_name + " !");
+      update_chat(false,"Okay. Opening " + application_name + " !");
     }
 }
 
@@ -298,7 +298,7 @@ window.onload = function() {
             keyword_spotted=true;
             setTimeout(function(){
                 authGoogleTransform();
-              }, 5000);
+              }, 1000);
           }
           keyword_spotted = false;
           //authGoogleTransform();
