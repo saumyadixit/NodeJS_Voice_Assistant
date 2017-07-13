@@ -16,14 +16,16 @@ body {
   width: 240px;
   height: auto;
   display: block;
-  background: #ccffe6;
+  background: #fffef2;
   border-radius: 4px;
   box-shadow: 2px 8px 5px #000;
   position: relative;
-  margin: 0 0 25px;
+  margin: 0 0 25px -90px;
+  text-align: left;
 }
 .speech-wrapper .bubble.alt {
-  margin: 0 0 0 60px;
+  background: #dcf4dc;
+  margin: 0 0 0 100px;
 }
 .speech-wrapper .bubble .txt {
   padding: 8px 55px 8px 14px;
@@ -39,7 +41,7 @@ body {
   color: #b3b3b3;
 }
 .speech-wrapper .bubble .txt .name.alt {
-  color: #2ecc71;
+  color: #603500;
 }
 .speech-wrapper .bubble .txt .message {
   font-size: 12px;
@@ -70,7 +72,7 @@ body {
   content: "";
   position: absolute;
   border: 0 solid transparent;
-  border-top: 9px solid #ccffe6;
+  border-top: 9px solid #9192aa;
   border-radius: 0 20px 0;
   width: 15px;
   height: 30px;
@@ -78,4 +80,13 @@ body {
 }
 .speech-wrapper .bubble .bubble-arrow.alt:after {
   transform: rotate(45deg) scaleY(-1);
+}
+
+.button {
+    background-color: #b0afbf; /* Green */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    /*font-size: 16px;*/
 }

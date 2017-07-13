@@ -2,15 +2,37 @@
 
 // These will be initialized later
 var recognizer, isRecognizerReady, recorder, callbackManager, audioContext, outputContainer;
+window.started_speaking = false;
+window.stoped_speaking = true;
+window.BinaryReady = false;
+window.Rec_Btn_State = false;
 
-var startBtn = document.getElementById('startBtn');
-var stopBtn = document.getElementById('stopBtn');
 var recordingIndicator = document.getElementById('recordingIndicator');
 var currentStatus = document.getElementById('currentStatus');
-
+var sound_volume = document.getElementById('volume');
 // Only when both recorder and recognizer do we have a ready application
 var isRecorderReady = isRecognizerReady = false;
 var keyword_spotted = false;
+
+  function micButton() {
+    if(window.Rec_Btn_State == false){
+        // do some stuff
+        startRecording();
+        //Change of Styles
+        window.Rec_Btn_State = true;
+        document.getElementById('btn_img').innerHTML="<i class='fa fa-stop-circle-o fa-4x' aria-hidden='true'></i>";
+        document.getElementById('mic').style.backgroundColor = "#e56767";
+    }
+    else {
+        // do some other stuff
+        //Change of Styles
+        stopRecording();
+        //window.Rec_Btn_State = true;
+        //document.getElementById('btn_img').innerHTML="<i class='fa fa-microphone fa-5x' aria-hidden='true'></i>";
+        //document.getElementById('mic').style.backgroundColor = "#b0afbf";
+    }
+}
+
 /* A convenience function to post a message to the recognizer and associate
  * a callback to its response
  */
@@ -140,6 +162,7 @@ function update_chat(isUser, txt) {
       //Load chat css
       document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble\"><div class=\"txt\"><p class=\"name\">Sydney</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow\"></div></div></div>";
   }
+  document.getElementById("chat-window").scrollTop = document.getElementById("chat-window").scrollHeight;
 }
 
 function current_time()
@@ -154,7 +177,7 @@ function current_time()
  */
 function updateUI() {
   if (isRecorderReady && isRecognizerReady) {
-    startBtn.disabled = stopBtn.disabled = false;
+    mic.disabled = false;
   }
 }
 
@@ -194,13 +217,17 @@ function startUserMedia(stream) {
   isRecorderReady = true;
   updateUI();
   updateStatus('Audio recorder ready');
+  processVolume(stream);
 }
+//Checks value buffer after certain interval
 
-// This starts recording.
+
+// This starts recording
 function startRecording() {
   outputContainer.innerHTML="";
   if (recorder && recorder.start()) {
     //Changes for Binary server
+
     var ip = location.host;
     var client = new BinaryClient('wss://'+ip);
     client.on('open', function() {
@@ -218,6 +245,11 @@ function startRecording() {
 function stopRecording() {
   recorder && recorder.stop();
   displayRecording(false);
+  window.started_speaking = false;
+  //Change style of button
+  window.Rec_Btn_State = false;
+  document.getElementById('btn_img').innerHTML="<i class='fa fa-microphone fa-5x' aria-hidden='true'></i>";
+  document.getElementById('mic').style.backgroundColor = "#b0afbf";
 
 }
 
@@ -260,7 +292,8 @@ function initRecognizer() {
 */
 window.onload = function() {
   outputContainer = document.getElementById('output');
-
+  document.getElementById("starttime2").innerHTML=current_time();
+  document.getElementById("starttime1").innerHTML=current_time();
   updateStatus('Initializing web audio and speech recognizer, waiting for approval to access the microphone');
   window.BinaryReady = false;
   callbackManager = new CallbackManager();
@@ -350,8 +383,48 @@ window.onload = function() {
   }
 
   // Wiring JavaScript to the UI
-  startBtn.disabled = true;
-  stopBtn.disabled = true;
-  startBtn.onclick = startRecording;
-  stopBtn.onclick = stopRecording;
+  mic.disabled = true;
+
+  mic.onclick = micButton;
+
 };
+
+function processVolume(stream) {
+  // Put variables in global scope to make them available to the
+  // browser console.
+  window.stream = stream;
+  var soundMeter = window.soundMeter = new SoundMeter(window.audioContext);
+  soundMeter.connectToSource(stream, function(e) {
+    if (e) {
+      alert(e);
+      return;
+    }
+    setInterval(function() {
+      //instantMeter.value = instantValueDisplay.innerText =
+      //    soundMeter.instant.toFixed(2);
+      var audio_volume = soundMeter.slow_1.toFixed(4);
+      sound_volume.innerHTML = 'Volume : ' + audio_volume;
+
+      if(window.BinaryReady)
+      {
+        window.started_speaking = true;
+        window.stoped_speaking = false;
+
+        setTimeout(function()
+        {
+            if(window.started_speaking = true && audio_volume < 0.008)
+            {
+              //Silence
+              //alert('Silence Detected');
+              window.started_speaking = false;
+              window.stoped_speaking = true;
+              stopRecording();
+            }
+       }, 3000);
+     }
+
+      //clipMeter.value = clipValueDisplay.innerText =
+      //    soundMeter.clip;
+    }, 1000);
+  });
+}
