@@ -68,7 +68,8 @@ function updateHyp(hyp) {
   if (outputContainer) {
     //Change
     if(hyp!="")
-      outputContainer.innerHTML="<div>True</div>";
+      outputContainer.innerHTML = hyp;
+    //  outputContainer.innerHTML="<div>True</div>";
     //outputContainer.innerHTML = hyp;
 
   }
