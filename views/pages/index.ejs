@@ -18,34 +18,18 @@
           <div class="center-column">
           <div class="div-chats" id="chat-window" style="border:groove; border-width:4px ; width:95%; padding-left:5%">
 
-            <div class="speech-wrapper">
-						  <div class="bubble">
-						    <div class="txt">
-						      <p class="name">Sydney</p>
-						      <p class="message">Hey, I am Sydney, Your Personal Assistant !</p>
-						      <span class="timestamp" id="starttime1">10:20 pm</span>
-						    </div>
-						    <div class="bubble-arrow"></div>
-						  </div>
-							</div>
-							<div class="speech-wrapper">
-						  <div class="bubble">
-						    <div class="txt">
-						      <p class="name">Sydney</p>
-						      <p class="message">How can I help you today?</p>
-						      <span class="timestamp" id="starttime2">10:20 pm</span>
-						    </div>
-						    <div class="bubble-arrow"></div>
-						  </div>
-							</div>
-						</br>
 					</div>
           </div>
           <div class="right-column">
 						<center>
 							<h3> Click Below to Speak !</h3>
               <button class="button" id="mic"><div id="btn_img"><i class="fa fa-microphone fa-5x" aria-hidden="true"></i></div></button>
-
+              <!-- Rounded switch -->
+              <h4>-- Sound Off/On  -- </h4>
+              <label class="switch">
+                <input type="checkbox" checked onclick="soundToggle()">
+                <span class="slider round"></span>
+              </label>
 				      </br>
     					<span id="recordingIndicator"></span>
     					<h2>Debug Output</h2>
@@ -62,6 +46,7 @@
 
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 			<script src="lib/binary.js"></script>
+      <script src="lib/responsivevoice.js"></script>
       <script src="lib/soundmeter.js"></script>
 			<script src="js/main.js"></script>
 			<script src="lib/audioRecorder.js"></script>

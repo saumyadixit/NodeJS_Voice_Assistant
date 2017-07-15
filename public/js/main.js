@@ -7,6 +7,7 @@ window.stoped_speaking = true;
 window.BinaryReady = false;
 window.Rec_Btn_State = false;
 
+var sound_toggle_click = true;
 var recordingIndicator = document.getElementById('recordingIndicator');
 var currentStatus = document.getElementById('currentStatus');
 var sound_volume = document.getElementById('volume');
@@ -162,6 +163,8 @@ function update_chat(isUser, txt) {
   {
       //Load chat css
       document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble\"><div class=\"txt\"><p class=\"name\">Sydney</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow\"></div></div></div>";
+      if(sound_toggle_click)
+        responsiveVoice.speak(txt, "US English Female");
   }
   document.getElementById("chat-window").scrollTop = document.getElementById("chat-window").scrollHeight;
 }
@@ -292,9 +295,8 @@ function initRecognizer() {
 /* When the page is loaded, we spawn a new recognizer worker and call getUserMedia to request access to the microphone
 */
 window.onload = function() {
+  showInitialMessages();
   outputContainer = document.getElementById('output');
-  document.getElementById("starttime2").innerHTML=current_time();
-  document.getElementById("starttime1").innerHTML=current_time();
   updateStatus('Initializing web audio and speech recognizer, waiting for approval to access the microphone');
   window.BinaryReady = false;
   callbackManager = new CallbackManager();
@@ -373,6 +375,7 @@ window.onload = function() {
           googAutoGainControl: false,
           googNoiseSuppression: false,
           googHighpassFilter: false
+
         },
         optional: []
       }
@@ -428,4 +431,17 @@ function processVolume(stream) {
       //    soundMeter.clip;
     }, 1000);
   });
+}
+
+function showInitialMessages()
+{
+  var message = "Hey, I am Sydney, Your Personal Assistant ! How can I help you today?"
+  update_chat(false,message);
+}
+
+function soundToggle()
+{
+  var chkbox = document.getElementById("soundToggleBtn");
+  chkbox.checked = !chkbox.checked;
+  sound_toggle_click = !sound_toggle_click;
 }
