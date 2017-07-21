@@ -1,8 +1,22 @@
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: url('/img/backgroud.jpg') ;
+
+  background-color:#F3F6F7;
+
+  font-family: 'Roboto';font-size: 22px;
 }
+
+.web-logo
+{
+  font-family: 'Roboto';font-size: 70px;font-weight: bolder;
+  background-color:#7399C6;
+  color:#F3F6F7;
+
+}
+
+
+
+
 
 .left-column
 {
@@ -31,16 +45,16 @@ width:35%;
 .div-chats{
   float:left;
   overflow-y: auto;
-  height: 450px;
+  height: 650px;
 }
 .speech-wrapper {
   padding: 5px 5px;
 }
 .speech-wrapper .bubble {
-  width: 240px;
+  width: 450px;
   height: auto;
   display: block;
-  background: #fffef2;
+  background: #44505A;
   border-radius: 4px;
   box-shadow: 2px 8px 5px #000;
   position: relative;
@@ -48,7 +62,7 @@ width:35%;
   text-align: left;
 }
 .speech-wrapper .bubble.alt {
-  background: #dcf4dc;
+  background: #44505A;
   margin-left: 25%;
 }
 .speech-wrapper .bubble .txt {
@@ -56,29 +70,30 @@ width:35%;
 }
 .speech-wrapper .bubble .txt .name {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 22px;
   margin: 0 0 4px;
-  color: #3498db;
+  color: #909BA4;
 }
 .speech-wrapper .bubble .txt .name span {
   font-weight: normal;
-  color: #b3b3b3;
+  color: #909BA4;
 }
 .speech-wrapper .bubble .txt .name.alt {
-  color: #603500;
+  color: #909BA4;
 }
 .speech-wrapper .bubble .txt .message {
-  font-size: 12px;
+  font-size: 20px;
   margin: 0;
-  color: #2b2b2b;
+  color: #FFFFFF;
 }
 .speech-wrapper .bubble .txt .timestamp {
-  font-size: 11px;
+  color: #909BA4;
+  font-size: 17px;
   position: absolute;
   bottom: 8px;
   right: 10px;
   text-transform: uppercase;
-  color: #999;
+
 }
 .speech-wrapper .bubble .bubble-arrow {
   position: absolute;
@@ -96,7 +111,7 @@ width:35%;
   content: "";
   position: absolute;
   border: 0 solid transparent;
-  border-top: 9px solid #9192aa;
+  border-top: 9px solid #44505A;
   border-radius: 0 20px 0;
   width: 15px;
   height: 30px;

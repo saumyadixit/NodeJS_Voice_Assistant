@@ -69,8 +69,8 @@ function updateHyp(hyp) {
   if (outputContainer) {
     //Change
     if(hyp!="")
-      outputContainer.innerHTML = hyp;
-    //  outputContainer.innerHTML="<div>True</div>";
+    //  outputContainer.innerHTML = hyp;
+      outputContainer.innerHTML="<div>True</div>";
     //outputContainer.innerHTML = hyp;
 
   }
@@ -431,6 +431,7 @@ function processVolume(stream) {
       //    soundMeter.clip;
     }, 1000);
   });
+
 }
 
 function showInitialMessages()

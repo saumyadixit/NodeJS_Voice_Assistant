@@ -6,13 +6,16 @@
 
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
   </head>
   <body>
 
         <div>
-        <center>
-          <div><img src="/img/logo.png"></div>
-        </center>
+
+
+          <div class="web-logo"><img src="/img/logo.png"></div>
+        </br>
+
           <div id="container">
           <div class="left-column"> + </div>
           <div class="center-column">
@@ -22,18 +25,18 @@
           </div>
           <div class="right-column">
 						<center>
-							<h3> Click Below to Speak !</h3>
+							<h1> Click Below to Speak !</h1>
               <button class="button" id="mic"><div id="btn_img"><i class="fa fa-microphone fa-5x" aria-hidden="true"></i></div></button>
               <!-- Rounded switch -->
               <h4>-- Sound Off/On  -- </h4>
               <label class="switch">
-                <input type="checkbox" checked onclick="soundToggle()">
+                <input type="checkbox" id = "soundToggleBtn" checked onclick="soundToggle()">
                 <span class="slider round"></span>
               </label>
 				      </br>
     					<span id="recordingIndicator"></span>
-    					<h2>Debug Output</h2>
-    					<h3>Keywords captured</h3>
+
+    					<h2>Keywords captured</h2>
     					<div id="output"></div>
               <h2>Status</h2>
     					<div id="currentStatus">Loading page</div>
