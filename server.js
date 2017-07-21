@@ -8,7 +8,7 @@ var fs = require('fs');
 //Initialize WAV plugin for handling wav encoding
 var wav = require('wav');
 
-
+console.log("Loading server.js");
 
 
 var outFile = 'InpFile';

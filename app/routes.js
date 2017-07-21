@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var url = require( "url" );
 var queryString = require( "querystring" );
-
+console.log("Loading routes.js");
 //Initialize linear16 plugin for conversion of audio to linear16 format from WAV
 const linear16 = require('linear16');
 //Create router object
