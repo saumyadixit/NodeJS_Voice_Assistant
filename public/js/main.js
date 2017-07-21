@@ -1,42 +1,40 @@
 'use strict';
 
-// These will be initialized later
+// Initialize recognizer, call back manager, audio context
 var recognizer, isRecognizerReady, recorder, callbackManager, audioContext, outputContainer;
 window.started_speaking = false;
 window.stoped_speaking = true;
 window.BinaryReady = false;
 window.Rec_Btn_State = false;
 
-var sound_toggle_click = true;
+//Initialization of variable for controls on the form
+var sound_toggle_click = true; //Set default Sound Toggle as on
 var recordingIndicator = document.getElementById('recordingIndicator');
 var currentStatus = document.getElementById('currentStatus');
 var sound_volume = document.getElementById('volume');
 // Only when both recorder and recognizer do we have a ready application
+// Set both of the above variables
 var isRecorderReady = isRecognizerReady = false;
 var keyword_spotted = false;
 
+//Function called when we press the Microphone button
   function micButton() {
     if(window.Rec_Btn_State == false){
-        // do some stuff
         startRecording();
-        //Change of Styles
+        //Change of Styles , Toggle button appearance from stop to start and vice versa
         window.Rec_Btn_State = true;
         document.getElementById('btn_img').innerHTML="<i class='fa fa-stop-circle-o fa-4x' aria-hidden='true'></i>";
         document.getElementById('mic').style.backgroundColor = "#e56767";
     }
     else {
-        // do some other stuff
         //Change of Styles
         stopRecording();
-        //window.Rec_Btn_State = true;
-        //document.getElementById('btn_img').innerHTML="<i class='fa fa-microphone fa-5x' aria-hidden='true'></i>";
-        //document.getElementById('mic').style.backgroundColor = "#b0afbf";
     }
 }
 
 /* A convenience function to post a message to the recognizer and associate
  * a callback to its response
- */
+*/
 function postRecognizerJob(message, callback) {
   var msg = message || {};
 
@@ -67,32 +65,31 @@ function spawnWorker(workerURL, onReady) {
 function updateHyp(hyp) {
   //console.log("Hyyypp :"+hyp+":");
   if (outputContainer) {
-    //Change
     if(hyp!="")
-    //  outputContainer.innerHTML = hyp;
       outputContainer.innerHTML="<div>True</div>";
-    //outputContainer.innerHTML = hyp;
 
   }
 }
 
+//Function authGoogleTransform is called when a keyword is detected
 function authGoogleTransform()
 {
+
+  //Create JSON object for passing to NOdeJS server
   var usercommand = new Object();
   usercommand.keyword = keyword_spotted;
   usercommand.detected_text = "";
   usercommand.intent = "";
-  //Test AJAX call to backend
+  //Make AJAX call to backend
   $.ajax({
     url: '/speech',
     data: {
-      jsonData: JSON.stringify(usercommand)
-
+      jsonData: JSON.stringify(usercommand) // Convert data to JSON
       },
     dataType: 'json',
     type: 'POST',
     success: function(items) {
-        /* do something with items here */
+        //This function is executed when the POST call receives a response from NodeJS backend
 
         console.log(items);
         console.log(items.text);
@@ -101,29 +98,32 @@ function authGoogleTransform()
         console.log(items.last_name);
         console.log(items.first_name);
         console.log(items.application_name);
-
-
+        //Call function process intent and pass the json data
         process_intent(items.intent, items.text, items.full_name,items.last_name,items.first_name,items.application_name);
-
 
     }
  });
 }
 
-
+//Function to process intent
 function process_intent(intent,text,full_name,last_name,first_name,application_name) {
+    // Convert text to Proper Case
     text = text.toProperCase();
+    //If intent unknown show message
     if(intent=="unknown")
     {
       update_chat(true,text);
       update_chat(false,"I am sorry, This function is not yet implemented!");
     }
+    //If intent is time show time
     if(intent=="time")
     {
+      //Find current time
       var timestamp = current_time();
       update_chat(true,text);
       update_chat(false,"Sure, Current time is " + timestamp + " !");
     }
+    //if intent is Call
     if(intent=="call")
     {
       first_name = first_name.toProperCase();
@@ -132,6 +132,7 @@ function process_intent(intent,text,full_name,last_name,first_name,application_n
       update_chat(true,text);
       update_chat(false,"Okay, Calling " + full_name + " !");
     }
+    //If intent is Find
     if(intent=="find")
     {
       first_name = first_name.toProperCase();
@@ -140,6 +141,7 @@ function process_intent(intent,text,full_name,last_name,first_name,application_n
       update_chat(true,text);
       update_chat(false,"Searching for " + full_name + " in your contacts!");
     }
+    //If intent is Open
     if(intent=="open")
     {
       application_name = application_name.toProperCase();
