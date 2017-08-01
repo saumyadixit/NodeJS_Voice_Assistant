@@ -159,12 +159,12 @@ function update_chat(isUser, txt) {
   if(isUser)
   {
       //Load alternate chat css
-      document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble alt\"><div class=\"txt\"><p class=\"name alt\">Saumya</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow alt\"></div></div></div></br>";
+      document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble alt\"><div class=\"txt\"><p class=\"name alt\">User</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow alt\"></div></div></div></br>";
   }
   else
   {
       //Load chat css
-      document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble\"><div class=\"txt\"><p class=\"name\">Sydney</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow\"></div></div></div>";
+      document.getElementById("chat-window").innerHTML += "<div class=\"speech-wrapper\"><div class=\"bubble\"><div class=\"txt\"><p class=\"name\">Sidney</p><p class=\"message\">"+txt+"</p><span class=\"timestamp\">"+timestamp+"</span></div><div class=\"bubble-arrow\"></div></div></div>";
       if(sound_toggle_click)
         responsiveVoice.speak(txt, "US English Female");
   }
@@ -438,7 +438,7 @@ function processVolume(stream) {
 
 function showInitialMessages()
 {
-  var message = "Hey, I am Sydney, Your Personal Assistant ! How can I help you today?"
+  var message = "Hey, I am Sidney, Your Personal Assistant ! How can I help you today?"
   update_chat(false,message);
 }
 
