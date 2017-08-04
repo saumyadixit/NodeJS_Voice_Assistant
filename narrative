@@ -1,0 +1,54 @@
+Narrative
+
+Activity Description
+
+Project:
+The project assigned to me was “Voice Assistant”. My objective was to build a voice enabled Assistant for GS which can take voice input from users. The objectives of the voice assistant was to take voice input and convert it to text using appropriate service, analyze the command and perform desired operation. 
+The goals of the prototype were as below:
+-	Build a voice enabled Assistant for GS which can take voice input from users.
+-	Convert voice to text using appropriate service.
+-	Analyze commands like “Call”, “Open” , “Time”, “Find” 
+-	Perform required operation using custom functions or using existing system agent
+-	Security is important, so only selected cases should be sent to cloud.
+-	Use NLP processing to allow Voice Assistant to understand natural human language.
+
+
+
+
+Project responsibilities:
+My project responsibilities were as below:
+-	Understand the existing system and gather requirements for the voice assistant.
+-	Analyze various options for Speech to Text APIs and select the best fit for our solution.
+-	Analyze various options for NLP toolkit and select the best fit for NLP processing.
+-	Analyze technologies and select best programing platform for front end, back end and NLP server.
+-	Design and Code the system, adhering to the requirements.
+-	Test the functionality of the Voice Assistant.
+
+To implement the functionality the architecture was divided was into 3 main divisions:
+-	HTML/ JavaScript Front End
+-	NodeJS Back End Server
+-	Spring Boot NLP Server
+On completion of development phase, I tested the product to make sure it met the prototype requirements.
+
+
+
+Problems Encountered :
+-	No prior work on the voice assistant was done by the team, so I had to go through all the libraries available for speech to text transcription and natural language processing, come up with the architecture keeping in mind the potential security constraints and implement it to have a working prototype. 
+-	There were various access problems encountered due to security concerns like microphone access on system and google speech API set up.
+-	There were various technology related  challenges that included the limitations of the speech recognition libs that were used in the voice assistant.
+
+Analysis Section:
+I certainly learnt a lot from this internship. Working on this project enhanced my skills in HTML, JavaScript and Java Spring Framework.
+I got to learn NodeJS, a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+I also got to learn Spring Boot. Spring Boot makes it easy to create Spring-powered, production-grade applications and services with absolute minimum fuss. It takes an opinionated view of the Spring platform so that new and existing users can quickly get to the bits they need.
+As part of my analysis I learned a lot on various Speech to text APIs which include online cloud based solutions like Google Speech Services, Android and iOS native speech to text libraries and some offline solutions like OpenEars, CMUSphinx (Pocketsphinx and Sphinx4).
+I also got to research on various NLP toolkits which include online solutions like API.AI, WIT.AI and offline solutions like Apache OpenNLP and Stanford CoreNLP. I also analyzed  cloud based Google NL solutions.
+Working on this project enhanced my analysis skills and increased my ability to select a best solution from a long list of choice while adhering to various security constraints and other project requirements.
+I designed and coded the whole project in modular fashion, so I also got exposure to how to Unit Test modules, on how to integrate them, solve problems that come up while integrating, perform integration and finally perform System testing on the whole product.
+Besides that Goldman Sachs follows an agile framework and I got a new experience to work in it. This learning assignment also taught me how to use best practices in coding schemes. This will surely help me in further jobs.
+I have developed production level coding ability, and how to document your work and share it with team.
+There were various kinds of activity sessions at the firm that helped me to know fellow interns and network outside my respective department. 
+There were Talk series in which I got to interact with the senior leaders of the firm discussing about their career journey and learn from their experiences. 
+I had three review sessions with my manager equally spaced in the duration of 10 weeks internship in which my manager would give me feedback so that I knew where I stand in terms of my work and ethics and what all improvements I can make to be more productive and learn more. It helped me to keep good pace of work and become better after each feedback session.
+Learned business etiquettes and got to know many products of Goldman Sachs and how investment banking and finance industry works in general. 
+
